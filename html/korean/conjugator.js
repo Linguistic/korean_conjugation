@@ -149,6 +149,69 @@ conjugator.both_regular_and_irregular = {
     '뒤까불': true, '까불': true
 };
 
+conjugator.regular_ees = {
+    '가려보이': true, '가로놓이': true, '가로누이': true, '가로채이': true, '가리이': true, '간종이': true,
+    '갈라붙이': true, '갈마들이': true, '갈붙이': true, '갈아들이': true, '갈아붙이': true, '감싸이': true,
+    '갸울이': true, '거두어들이': true, '거둬들이': true, '거머들이': true, '건너다보이': true,
+    '건중이': true, '걷어붙이': true, '걸머메이': true, '걸메이': true, '걸채이': true, '걸터들이': true,
+    '겉뜨이': true, '겉절이': true, '겹쌓이': true, '곁들이': true, '곁붙이': true, '고이': true, '고이': true,
+    '곤두박이': true, '곱꺾이': true, '곱놓이': true, '곱들이': true, '곱먹이': true, '공들이': true,
+    '괴이': true, '괴이': true, '굽어보이': true, '굽죄이': true, '그러들이': true, '기울이': true,
+    '기이': true, '기죽이': true, '길들이': true, '깃들이': true, '깊이': true, '까붙이': true, '까이': true,
+    '깎이': true, '깎이': true, '깔보이': true, '깨이': true, '꺄울이': true, '꺼들이': true, '꺾이': true,
+    '꼬이': true, '꼬이': true, '꼬이': true, '꼬이': true, '꼽들이': true, '꾀이': true, '꾸이': true,
+    '꾸이': true, '꿰이': true, '끄숙이': true, '끄집어들이': true, '끊이': true, '끌어들이': true,
+    '끓이': true, '끼울이': true, '끼이': true, '끼이': true, '나누이': true, '나덤벙이': true,
+    '나번득이': true, '낚이': true, '낮보이': true, '내놓이': true, '내다보이': true, '내려다보이': true,
+    '내려붙이': true, '내리덮이': true, '내리먹이': true, '내리쌓이': true, '내리쪼이': true,
+    '내보이': true, '내보이': true, '내붙이': true, '넘겨다보이': true, '넘보이': true, '노느이': true,
+    '녹이': true, '높이': true, '놓아먹이': true, '놓이': true, '누이': true, '누이': true, '누이': true,
+    '누이': true, '누이': true, '눅이': true, '눈기이': true, '늘이': true, '늘이': true, '늘줄이': true,
+    '다가붙이': true, '다붙이': true, '닦이': true, '닦이': true, '달이': true, '답쌓이': true,
+    '덧끼이': true, '덧놓이': true, '덧덮이': true, '덧들이': true, '덧들이': true, '덧보이': true,
+    '덧붙이': true, '덧쌓이': true, '덮싸이': true, '덮쌓이': true, '덮이': true, '데겅이': true,
+    '도두보이': true, '돋보이': true, '돌려다붙이': true, '동이': true, '되박이': true, '되쓰이': true,
+    '되치이': true, '둘러싸이': true, '뒤꼬이': true, '뒤놓이': true, '뒤덮이': true, '뒤바꾸이': true,
+    '뒤방이': true, '뒤볶이': true, '뒤섞이': true, '뒤엎이': true, '드높이': true, '드러쌓이': true,
+    '드러장이': true, '들뜨이': true, '들볶이': true, '들여다보이': true, '들이끼이': true,
+    '들이끼이': true, '들이': true, '들이': true, '들이쌓이': true, '들이쌓이': true, '땋이': true,
+    '때려누이': true, '때려죽이': true, '떠먹이': true, '떠벌이': true, '떠이': true, '떼이': true,
+    '뜨이': true, '뜨이': true, '뜨이': true, '뜨이': true, '뜯어벌이': true, '맞놓이': true,
+    '맞바라보이': true, '맞붙이': true, '맞아들이': true, '맞쪼이': true, '맡이': true,
+    '매손붙이': true, '매이': true, '매이': true, '매이': true, '매조이': true, '먹이': true,
+    '메다붙이': true, '메붙이': true, '메어붙이': true, '메이': true, '명씨박이': true,
+    '모아들이': true, '모이': true, '몰아들이': true, '몰아붙이': true, '무이': true, '묶이': true,
+    '물들이': true, '물어들이': true, '미이': true, '밀어붙이': true, '밀치이': true, '밉보이': true,
+    '바꾸이': true, '바라보이': true, '박이': true, '박이': true, '받아들이': true, '발보이': true,
+    '발붙이': true, '방이': true, '밭이': true, '밭이': true, '배꼬이': true, '배붙이': true,
+    '배붙이': true, '번갈아들이': true, '벋놓이': true, '벌어들이': true, '벌이': true, '베이': true,
+    '보이': true, '보이': true, '보쟁이': true, '보채이': true, '볶이': true, '부딪치이': true,
+    '부레끓이': true, '부리이': true, '부치이': true, '불러들이': true, '불붙이': true, '붙동이': true,
+    '붙매이': true, '붙박이': true, '붙이': true, '비꼬이': true, '비뚤이': true, '비추이': true,
+    '빗놓이': true, '빗보이': true, '빨아들이': true, '뻗장이': true, '삐뚤이': true, '사들이': true,
+    '사이': true, '삭이': true, '삭이': true, '생청붙이': true, '석이': true, '섞이': true, '선들이': true,
+    '선보이': true, '설죽이': true, '속이': true, '숙이': true, '숨죽이': true, '쉬이': true, '싸이': true,
+    '싸이': true, '쌓이': true, '썩이': true, '쏘아붙이': true, '쏘이': true, '쏘이': true, '쏴붙이': true,
+    '쓰이': true, '쓰이': true, '쓰이': true, '쓰이': true, '알아방이': true, '애먹이': true,
+    '야코죽이': true, '얕보이': true, '어녹이': true, '얼녹이': true, '얼보이': true, '얽동이': true,
+    '얽매이': true, '얽섞이': true, '엇깎이': true, '엇누이': true, '엇바꾸이': true, '엇베이': true,
+    '엇붙이': true, '엇섞이': true, '엎이': true, '에워싸이': true, '에이': true, '엮이': true,
+    '열어붙이': true, '엿보이': true, '옥이': true, '옥조이': true, '옥죄이': true, '올려붙이': true,
+    '옭매이': true, '옴츠러들이': true, '욕보이': true, '우러러보이': true, '우줅이': true, '욱이': true,
+    '욱조이': true, '욱죄이': true, '움츠러들이': true, '윽죄이': true, '이': true, '익삭이': true,
+    '잡아들이': true, '장가들이': true, '쟁이': true, '절이': true, '접붙이': true, '접치이': true,
+    '정들이': true, '정붙이': true, '조이': true, '졸이': true, '죄이': true, '죽이': true, '죽이': true,
+    '줄이': true, '쥐이': true, '쥐이': true, '지이': true, '짓볶이': true, '짓죽이': true, '짜이': true,
+    '쪼이': true, '쪼이': true, '쪼이': true, '쬐이': true, '차이': true, '처들이': true, '처먹이': true,
+    '처쟁이': true, '쳐다보이': true, '추이': true, '축이': true, '충이': true, '치먹이': true,
+    '치쌓이': true, '치이': true, '치이': true, '치이': true, '치이': true, '치이': true, '치이': true,
+    '치이': true, '켜이': true, '트이': true, '파이': true, '펴이': true, '풀어먹이': true, '할퀴이': true,
+    '핥이': true, '핥이': true, '헛놓이': true, '헛보이': true, '헛짚이': true, '헝클이': true,
+    '홀라들이': true, '홅이': true, '훌닦이': true, '훌라들이': true, '훑이': true, '휘덮이': true,
+    '휘어붙이': true, '휩싸이': true, '흘레붙이': true, '흙들이': true, '흩이': true, '힘들이': true,
+    '모이': true
+}
+
 conjugator.not_p_irregular = {'털썩이잡': true, '넘겨잡': true, '우접': true, '입': true, '맞접': true, '문잡': true, '다잡': true, '까뒤집': true, '배좁': true, '목잡': true, '끄집': true, '잡': true, '옴켜잡': true, '검잡': true, '되순라잡': true, '내씹': true, '모집': true, '따잡': true, '엇잡': true, '까집': true, '겹집': true, '줄통뽑': true, '버르집': true, '지르잡': true, '추켜잡': true, '업': true, '되술래잡': true, '되접': true, '좁디좁': true, '더위잡': true, '말씹': true, '내뽑': true, '집': true, '걸머잡': true, '휘어잡': true, '꿰입': true, '황잡': true, '에굽': true, '내굽': true, '따라잡': true, '맞뒤집': true, '둘러업': true, '늘잡': true, '끄잡': true, '우그려잡': true, '어줍': true, '언걸입': true, '들이곱': true, '껴잡': true, '곱 접': true, '훔켜잡': true, '늦추잡': true, '갈아입': true, '친좁': true, '희짜뽑': true, '마음잡': true, '개미잡': true, '옴씹': true, '치잡': true, '그러잡': true, '움켜잡': true, '씹': true, '비집': true, '꼽': true, '살잡': true, '죄입': true, '졸잡': true, '가려잡': true, '뽑': true, '걷어잡': true, '헐잡': true, '돌라입': true, '덧잡': true, '얕잡': true, '낫잡': true, '부여잡': true, '맞붙잡': true, '걸입': true, '주름잡': true, '걷어입': true, '빌미잡': true, '개잡': true, '겉잡': true, '안쫑잡': true, '좁': true, '힘입': true, '걷잡': true, '바르집': true, '감씹': true, '짓씹': true, '손잡': true, '포집': true, '붙잡': true, '낮잡': true, '책잡': true, '곱잡': true, '흉잡': true, '뒤집': true, '땡잡': true, '어림잡': true, '덧껴입': true, '수줍': true, '뒤잡': true, '꼬집': true, '예굽': true, '덮쳐잡': true, '헛잡': true, '되씹': true, '낮추잡': true, '날파람잡': true, '틀어잡': true, '헤집': true, '남의달잡': true, '바로잡': true, '흠잡': true, '파잡': true, '얼추잡': true, '손꼽': true, '접': true, '차려입': true, '골라잡': true, '거머잡': true, '후려잡': true, '머줍': true, '넉장뽑': true, '사로잡': true, '덧입': true, '껴입': true, '얼입': true, '우집': true, '설잡': true, '늦잡': true, '비좁': true, '고르잡': true, '때려잡': true, '떼집': true, '되잡': true, '홈켜잡': true, '내곱': true, '곱씹': true, '빼입': true, '들이굽': true, '새잡': true, '이르집': true, '떨쳐입': true};
 
 conjugator.not_s_irregular = {'내솟': true, '빗': true, '드솟': true, '비웃': true, '뺏': true, '샘솟': true, '벗': true, '들이웃': true, '솟': true, '되뺏': true, '빼앗': true, '밧': true, '애긋': true, '짜드라웃': true, '어그솟': true, '들솟': true, '씻': true, '빨가벗': true, '깃': true, '벌거벗': true, '엇': true, '되빼앗': true, '웃': true, '앗': true, '헐벗': true, '용솟': true, '덧솟': true, '발가벗': true, '뻘거벗': true, '날솟': true, '치솟': true};
@@ -322,9 +385,9 @@ conjugator.base3 = function(infinitive, regular) {
 
 conjugator.declarative_present_informal_low = function(infinitive, regular, further_use) {
     infinitive = conjugator.base2(infinitive, regular);
-    if (!further_use && ((infinitive == '이' && !infinitive.hidden_padchim) ||
-                         infinitive == '아니') ||
-                        (regular && infinitive.charAt(infinitive.length-1) == '이')) {
+    if (!further_use && ((infinitive.charAt(infinitive.length-1) == '이' && !infinitive.hidden_padchim &&
+                          !(infinitive in conjugator.regular_ees) || infinitive == '아니') ||
+                        (regular && infinitive.charAt(infinitive.length-1) == '이'))) {
         conjugator.reasons.push('야 irregular');
         return infinitive + '야';
     }
@@ -362,8 +425,8 @@ conjugator.declarative_present_informal_low.conjugation = true;
 
 conjugator.declarative_present_informal_high = function(infinitive, regular) {
     infinitive = conjugator.base2(infinitive, regular)
-    if ((infinitive == '이' && !infinitive.hidden_padchim) ||
-        (infinitive.charAt(infinitive.length-1) == '이' && regular) ||
+    if ((infinitive.charAt(infinitive.length-1) == '이' && !infinitive.hidden_padchim &&
+        !(infinitive in conjugator.regular_ees)) ||
         infinitive == '아니') {
         conjugator.reasons.push('에요 irregular')
         return infinitive + '에요';

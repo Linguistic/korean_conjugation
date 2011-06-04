@@ -69,6 +69,14 @@ assert.equal(conjugator.base2('아니'), '아니');
 
 assert.equal(conjugator.base3('돕다'), '도우');
 
+assert.equal(conjugator.declarative_present_informal_low('폭력적이다'), '폭력적이야');
+assert.equal(conjugator.declarative_present_informal_high('폭력적이다'), '폭력적이에요');
+assert.equal(conjugator.declarative_present_informal_low('아니다'), '아니야');
+assert.equal(conjugator.declarative_present_informal_high('아니다'), '아니에요');
+assert.equal(conjugator.declarative_present_informal_low('댄이다'), '댄이야');
+assert.equal(conjugator.declarative_present_informal_high('댄이다'), '댄이에요');
+// not sure if we will ever be able to detect the implied copula
+// assert.equal(conjugator.declarative_present_informal_low('맥스다'), '맥스야');
 assert.equal(conjugator.declarative_present_informal_low('모이다'), '모여');
 assert.equal(conjugator.declarative_present_informal_high('모이다'), '모여요');
 assert.equal(conjugator.declarative_present_informal_low('이르다', true), '일러');
