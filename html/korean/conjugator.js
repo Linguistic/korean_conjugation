@@ -3,7 +3,8 @@
 
 try {
     var hangeul       = require('./hangeul'),
-        pronunciation = require('./pronunciation');
+        pronunciation = require('./pronunciation'),
+        romanization  = require('./romanization');
 } catch(e) {}
 
 var conjugator = {};
@@ -703,6 +704,14 @@ conjugator.each_conjugation = function(infinitive, regular, callback) {
             callback(r);
         }
     }
+};
+
+conjugator.conjugate = function(infinitive, regular, callback) {
+    var conjugations = [];
+    conjugator.each_conjugation(infinitive, regular, function(result) {
+        conjugations.push(result);
+    });
+    callback(conjugations);
 };
 
 // Export functions to node
