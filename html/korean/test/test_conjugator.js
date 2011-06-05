@@ -69,6 +69,8 @@ assert.equal(conjugator.base2('아니'), '아니');
 
 assert.equal(conjugator.base3('돕다'), '도우');
 
+assert.equal(conjugator.declarative_present_informal_low('이다'), '이야');
+assert.equal(conjugator.declarative_present_informal_high('이다'), '이에요');
 assert.equal(conjugator.declarative_present_informal_low('폭력적이다'), '폭력적이야');
 assert.equal(conjugator.declarative_present_informal_high('폭력적이다'), '폭력적이에요');
 assert.equal(conjugator.declarative_present_informal_low('아니다'), '아니야');

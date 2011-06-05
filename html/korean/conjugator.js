@@ -199,7 +199,7 @@ conjugator.regular_ees = {
     '엇붙이': true, '엇섞이': true, '엎이': true, '에워싸이': true, '에이': true, '엮이': true,
     '열어붙이': true, '엿보이': true, '옥이': true, '옥조이': true, '옥죄이': true, '올려붙이': true,
     '옭매이': true, '옴츠러들이': true, '욕보이': true, '우러러보이': true, '우줅이': true, '욱이': true,
-    '욱조이': true, '욱죄이': true, '움츠러들이': true, '윽죄이': true, '이': true, '익삭이': true,
+    '욱조이': true, '욱죄이': true, '움츠러들이': true, '윽죄이': true, '익삭이': true,
     '잡아들이': true, '장가들이': true, '쟁이': true, '절이': true, '접붙이': true, '접치이': true,
     '정들이': true, '정붙이': true, '조이': true, '졸이': true, '죄이': true, '죽이': true, '죽이': true,
     '줄이': true, '쥐이': true, '쥐이': true, '지이': true, '짓볶이': true, '짓죽이': true, '짜이': true,
