@@ -1,7 +1,10 @@
 form(action='/', method='get')
   label(for='infinitive') infinitive
-  input(name='infinitive', value=infinitive)
+  input(name='infinitive', value=infinitive, autofocus)
   input(value='conjugate', type='submit')
+div#definition
+  - each definition in definitions
+    p= definition
 table
   thead
     tr
