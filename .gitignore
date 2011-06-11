@@ -14,3 +14,7 @@ man
 docs
 korean_verbs.sqlite3
 /node_modules
+*.pch
+.DS_Store
+/ios/build
+*.xcodeproj
