@@ -38,7 +38,7 @@ app.get('/', function (req, res) {
       function(err, results) {
         // redirect to the conjugation if there is only one result
         if (results.length == 1) {
-          res.redirect('/?search=' + results[0].infinitive);
+          return res.redirect('/?search=' + results[0].infinitive);
         }
         res.render('definition-search.jade', {
           search: search,
