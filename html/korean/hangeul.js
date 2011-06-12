@@ -40,6 +40,13 @@ var hangeul = function() {
         }
         return false;
     };
+    this.is_hangeul_string = function(string) {
+        return string
+               // remove spaces and punctuation
+               .replace(/[\32-\151 ]/g, '')
+               .split('')
+               .every(this.is_hangeul);
+    }
     // Equations lifted directly from:
     // http://www.kfunigraz.ac.at/~katzer/korean_hangul_unicode.html
     this.lead = function(character) {
