@@ -29,7 +29,7 @@ app.get('/', function (req, res) {
     return res.redirect('/?search=' + req.query.infinitive);
   }
   if (!search) {
-    search = '하다';
+    return res.redirect('/?search=하다');
   }
   // if non-hangeul characters appear in the input search the definitions
   if (!hangeul.is_hangeul_string(search)) {
