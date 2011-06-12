@@ -43,7 +43,7 @@ var hangeul = function() {
     this.is_hangeul_string = function(string) {
         return string
                // remove spaces and punctuation
-               .replace(/[\32-\151 ]/g, '')
+               .replace(/[!"\?\. ]/g, '')
                .split('')
                .every(this.is_hangeul);
     }
