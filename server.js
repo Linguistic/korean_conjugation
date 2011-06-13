@@ -51,9 +51,9 @@ app.get('/', function (req, res) {
     var verbs = [];
     var definitions = [];
     var valid_verbs = [];
-    select_definition.all(infinitive, function(err, results) {
+    select_definition.all(infinitive.replace(/ /g, ''), function(err, results) {
       definitions = results.map(function(x) { return x.definition });
-      select_verb_type.all(infinitive, function(err, results) {
+      select_verb_type.all(infinitive.replace(/ /g, ''), function(err, results) {
         valid_verbs = results;
         conjugator.conjugate(
           infinitive,
