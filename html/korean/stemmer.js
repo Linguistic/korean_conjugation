@@ -75,6 +75,36 @@ stemmer.stem = function(verb) {
     }
 };
 
+stemmer.base_forms = function(infinitive) {
+    var base_forms = [];
+
+    [
+        conjugator.base,
+        conjugator.base2,
+        conjugator.base3,
+        conjugator.declarative_present_informal_low,
+        function(infinitive, regular) {
+            var conjugated = conjugator.declarative_present_informal_high(
+                infinitive,
+                regular
+            );
+            return conjugated.substr(0, conjugated.length-1);
+        }
+    ].forEach(function(base) {
+        [true, false].forEach(function(regular) {
+            // Need to cast to String here because some
+            // irregulars are Geulja (see hangeul.js)
+            base_form = String(base(infinitive, regular));
+            if (base_forms.indexOf(base_form) == -1 &&
+                base_forms.indexOf(base_form.substr(0, base_form.length-1)) == -1) {
+                base_forms.push(base_form);
+            }
+        });
+    });
+
+    return base_forms;
+}
+
 // Export functions to node
 try {
     for (f in stemmer) {
