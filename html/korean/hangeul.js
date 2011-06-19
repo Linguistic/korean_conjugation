@@ -85,6 +85,16 @@ var hangeul = function() {
         }
         return String.fromCharCode(padchim_offset + (vowel_offset) * 28 + (lead_offset) * 588 + 44032 + 1);
     };
+    this.split = function(geulja) {
+        return [lead(geulja), vowel(geulja), padchim(geulja)];
+    };
+    this.spread = function(string) {
+        return string
+               .split('')
+               .map(this.split)
+               .reduce(function(a, b) { return a.concat(b) })
+               .join('');
+    };
     this.find_vowel_to_append = function(string) {
         self = this;
         append = null;
