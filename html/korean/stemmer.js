@@ -75,6 +75,24 @@ stemmer.stem = function(verb) {
     }
 };
 
+stemmer.stem_lookup = function(phrase, select_by_stem, callback) {
+    var spread_phrase = hangeul.spread(phrase);
+    var results = [];
+    var called = 0;
+    function add_results(new_results) {
+        results = results.concat(new_results);
+        called++;
+        if (called == spread_phrase.length) {
+            return callback(results);
+        }
+    }
+    for (var i=spread_phrase.length; i>=0; i--) {
+        select_by_stem.all(spread_phrase.substr(0, i), function(err, rows) {
+            add_results(rows.map(function(r) { return r.infinitive }));
+        });
+    }
+};
+
 stemmer.base_forms = function(infinitive) {
     var base_forms = [];
 
