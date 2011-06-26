@@ -51,16 +51,28 @@ public class Dongsa extends Activity {
 
     public void clearList() {
         synchronized (this.conjugations) {
-            this.conjugations.clear();
+            final SimpleAdapter adapter = (SimpleAdapter)this.list.getAdapter();
+            this.list.post(new Runnable() {
+                public void run() {
+                    Dongsa.this.conjugations.clear();
+                    adapter.notifyDataSetChanged();
+                }
+            });
         }
     }
 
-    public void add(String conjugation_name, String conjugated) {
+    public void add(final String conjugation_name, final String conjugated) {
         synchronized (this.conjugations) {
-            HashMap<String,String> item = new HashMap<String,String>();
-            item.put("conjugation_name", conjugation_name);
-            item.put("conjugated", conjugated);
-            this.conjugations.add(item);
+            final SimpleAdapter adapter = (SimpleAdapter)this.list.getAdapter();
+            this.list.post(new Runnable() {
+                public void run() {
+                    HashMap<String,String> item = new HashMap<String,String>();
+                    item.put("conjugation_name", conjugation_name);
+                    item.put("conjugated", conjugated);
+                    Dongsa.this.conjugations.add(item);
+                    adapter.notifyDataSetChanged();
+                }
+            });
         }
     }
 
