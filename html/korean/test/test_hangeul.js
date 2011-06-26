@@ -4,6 +4,11 @@ try {
 } catch(e) {}
 
 assert.equal(hangeul.is_hangeul('안'), true);
+assert.equal(hangeul.is_hangeul_string('안녕'), true);
+assert.equal(hangeul.is_hangeul_string('안peace'), false);
+assert.equal(hangeul.is_hangeul_string('안 녕'), true);
+assert.equal(hangeul.is_hangeul_string('안녕!'), true);
+assert.equal(hangeul.is_hangeul_string('die'), false);
 
 assert.equal(hangeul.lead('가'), 'ᄀ');
 assert.equal(hangeul.lead('만'), 'ᄆ');

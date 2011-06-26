@@ -1,0 +1,3 @@
+[submodule "korean-verb-database"]
+	path = korean-verb-database
+	url = git+ssh://git@bravender.us:99/home/git/korean-verb-database

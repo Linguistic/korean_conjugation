@@ -1,7 +1,9 @@
-form(action='/', method='get')
-  label(for='infinitive') infinitive
-  input(name='infinitive', value=infinitive)
-  input(value='conjugate', type='submit')
+!= partial('search-form.jade')
+div#definition
+  - each definition in definitions
+    p= definition
+- if (valid_verbs.length == 0 && definitions.length == 0)
+  Verb was not found in the verb database
 table
   thead
     tr
