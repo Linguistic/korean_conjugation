@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.webkit.WebView;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.CheckBox;
 import android.widget.SimpleAdapter;
 import android.widget.AdapterView.OnItemClickListener;
 import android.view.KeyEvent;
@@ -24,6 +26,7 @@ import org.json.JSONObject;
 public class Dongsa extends Activity {
     private ArrayList<HashMap<String,String>> conjugations = new ArrayList<HashMap<String,String>>();
     private ListView list;
+    private CheckBox regular;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +36,17 @@ public class Dongsa extends Activity {
         engine.getSettings().setJavaScriptEnabled(true);
         engine.addJavascriptInterface(new JavaScriptInterface(this), "Android");
 
+        this.regular = (CheckBox) findViewById(R.id.regular);
         final EditText edittext = (EditText) findViewById(R.id.searchEdit);
+        
+        this.regular.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				engine.loadUrl("javascript:update('" + edittext.getText() + "', false);");
+			}
+        });
+        
         edittext.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 engine.loadUrl("javascript:update('" + v.getText() + "', false);");
@@ -81,9 +94,8 @@ public class Dongsa extends Activity {
         }
     }
 
-    public boolean regular() {
-        // TODO: UI for toggling this
-        return true;
+    public boolean getRegular() {
+        return this.regular.isChecked();
     }
 
     public void showVerb(final String json) {
@@ -136,7 +148,7 @@ public class Dongsa extends Activity {
         }
 
         public boolean regular() {
-            return ((Dongsa)mContext).regular();
+            return ((Dongsa)mContext).getRegular();
         }
 
         public void showVerb(String json) {

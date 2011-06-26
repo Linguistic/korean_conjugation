@@ -10,6 +10,7 @@
             android:imeOptions="actionDone"
             android:inputType="text" />
     </LinearLayout>
+    <CheckBox android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Regular Form" android:id="@+id/regular"></CheckBox>
     <ListView android:layout_width="fill_parent"
               android:layout_height="fill_parent" android:id="@+id/listview"/>
 </LinearLayout>
