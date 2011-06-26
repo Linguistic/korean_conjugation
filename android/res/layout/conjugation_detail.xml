@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+    <TextView android:id="@+id/lblInfinitive" android:textAppearance="?android:attr/textAppearanceSmall" android:layout_height="wrap_content" android:text="Infinitive" android:layout_width="fill_parent"></TextView>
+    <TextView android:id="@+id/infinitive" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_height="wrap_content" android:text="TextView" android:layout_width="fill_parent"></TextView>
+    <TextView android:id="@+id/conjugation" android:textAppearance="?android:attr/textAppearanceSmall" android:layout_height="wrap_content" android:text="TextView" android:layout_width="fill_parent"></TextView>
+    <TextView android:id="@+id/conjugated" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_height="wrap_content" android:text="TextView" android:layout_width="fill_parent"></TextView>
+    <TextView android:textAppearance="?android:attr/textAppearanceSmall" android:layout_height="wrap_content" android:text="Pronunciation" android:id="@+id/lblPronunciation" android:layout_width="fill_parent"></TextView>
+    <TextView android:id="@+id/pronunciation" android:textAppearance="?android:attr/textAppearanceLarge" android:layout_height="wrap_content" android:text="TextView" android:layout_width="fill_parent"></TextView>
+    <TextView android:textAppearance="?android:attr/textAppearanceLarge" android:layout_height="wrap_content" android:text="TextView" android:id="@+id/romanized" android:layout_width="fill_parent"></TextView>
+    <TextView android:id="@+id/lblExplanation" android:textAppearance="?android:attr/textAppearanceSmall" android:layout_height="wrap_content" android:text="Explanation" android:layout_width="fill_parent"></TextView>
+    <TextView android:id="@+id/reasons" android:textAppearance="?android:attr/textAppearanceSmall" android:text="TextView" android:layout_width="fill_parent" android:layout_height="fill_parent"></TextView>
+    
+</LinearLayout>

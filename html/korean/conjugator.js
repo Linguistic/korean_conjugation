@@ -692,7 +692,7 @@ conjugator.each_conjugation = function(infinitive, regular, callback) {
         conjugator.reasons = [];
         if (conjugator[conjugation].conjugation) {
             var r = {};
-            r.infinitive = infinitive;
+            r.infinitive = infinitive + '다';
             r.conjugation_name = conjugation.replace(/_/g, ' ');
             r.conjugated = conjugator[conjugation](infinitive, regular);
             r.pronunciation = pronunciation.get_pronunciation(r.conjugated);
@@ -712,6 +712,12 @@ conjugator.conjugate = function(infinitive, regular, callback) {
         conjugations.push(result);
     });
     callback(conjugations);
+};
+
+conjugator.conjugate_json = function(infinitive, regular, callback) {
+    conjugator.conjugate(infinitive, regular, function(result) {
+        callback(JSON.stringify(result));
+    });
 };
 
 // Export functions to node

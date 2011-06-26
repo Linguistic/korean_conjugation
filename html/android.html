@@ -12,19 +12,16 @@
 
 if (typeof Android == 'undefined') {
     Android = {
-        'clearList': function() { console.log('clearList'); },
-        'add': function(x) { console.log(x); },
-        'displayList': function() { console.log('displayList'); }
+        'regular': function() { console.log('regular'); },
+        'showVerb': function() { console.log('showVerb'); }
     };
 }
 
-function update(infinitive, regular) {
-    Android.clearList();
-    conjugator.each_conjugation(infinitive, regular, function(r) {
-        //TODO: need to handle verbs that have regular and irregulars
-        Android.add(r.conjugation_name, r.conjugated);
+function update(infinitive) {
+    regular = Android.regular();
+    conjugator.conjugate_json(infinitive, regular, function(json) {
+        Android.showVerb(json);
     });
-    Android.displayList();
 }
 
 update('하다');
