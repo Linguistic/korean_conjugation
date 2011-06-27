@@ -12,8 +12,8 @@
 
 if (typeof Android == 'undefined') {
     Android = {
-        'regular': function() { console.log('regular'); },
-        'showVerb': function() { console.log('showVerb'); }
+        'regular': function() { console.log('Android.regular'); return false; },
+        'showVerb': function() { console.log('Android.showVerb'); }
     };
 }
 

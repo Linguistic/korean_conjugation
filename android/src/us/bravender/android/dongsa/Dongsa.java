@@ -10,12 +10,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.CheckBox;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.view.KeyEvent;
 import android.view.View;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -27,29 +29,33 @@ public class Dongsa extends Activity {
     private ArrayList<HashMap<String,String>> conjugations = new ArrayList<HashMap<String,String>>();
     private ListView list;
     private CheckBox regular;
+    private VerbDatabase verbDatabase;
+    private EditText edittext;
+    private WebView engine;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        verbDatabase = new VerbDatabase(this);
+    	
+    	super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-
-        final WebView engine = new WebView(this);
+        
+        engine = new WebView(this);
         engine.getSettings().setJavaScriptEnabled(true);
         engine.addJavascriptInterface(new JavaScriptInterface(this), "Android");
 
         this.regular = (CheckBox) findViewById(R.id.regular);
-        final EditText edittext = (EditText) findViewById(R.id.searchEdit);
+        edittext = (EditText) findViewById(R.id.searchEdit);
         
         this.regular.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
-
-			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				engine.loadUrl("javascript:update('" + edittext.getText() + "', false);");
+				updateConjugations();
 			}
         });
         
         edittext.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                engine.loadUrl("javascript:update('" + v.getText() + "', false);");
+                updateConjugations();
                 return true;
             }
         });
@@ -63,11 +69,14 @@ public class Dongsa extends Activity {
             new int[] { R.id.text1, R.id.text2 }
         ));
         this.list.setOnItemClickListener(new OnItemClickListener() {
-            // @Override
              public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-                 Intent next = new Intent();
+            	 HashMap<String, String> conjugation = conjugations.get(position);
+            	 if (conjugation.get("clickable").equals("no")) {
+            		 return;
+            	 }
+            	 Intent next = new Intent();
                  next.setClass(Dongsa.this, ConjugationDetailActivity.class);
-                 HashMap<String, String> conjugation = conjugations.get(position);
+                 
                  next.putExtra("infinitive", conjugation.get("infinitive"));
                  next.putExtra("conjugation_name", conjugation.get("conjugation_name"));
                  next.putExtra("conjugated", conjugation.get("conjugated"));
@@ -82,6 +91,15 @@ public class Dongsa extends Activity {
         engine.loadUrl("file:///android_asset/html/android.html");
     }
 
+    public void updateConjugations() {
+    	String infinitive = edittext.getText().toString();
+    	engine.loadUrl("javascript:update('" + infinitive + "', false);");
+    }
+    
+    public void say(String text) {
+    	Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+    }
+    
     public void clearList() {
         synchronized (this.conjugations) {
             final SimpleAdapter adapter = (SimpleAdapter)this.list.getAdapter();
@@ -106,31 +124,43 @@ public class Dongsa extends Activity {
                     Dongsa.this.conjugations.clear();
                     adapter.notifyDataSetChanged();
                 	JSONArray conjugationArray;
-					try {
-						conjugationArray = new JSONArray(json);
-						adapter.notifyDataSetChanged();
-	                    for (int i=0; i<conjugationArray.length(); i++) {
-							try {
-								JSONObject conjugation = (JSONObject)conjugationArray.get(i);
-								HashMap<String,String> item = new HashMap<String,String>();
-								item.put("infinitive", conjugation.getString("infinitive"));
-								item.put("conjugation_name", conjugation.getString("conjugation_name"));
-								item.put("conjugated", conjugation.getString("conjugated"));
-								item.put("pronunciation", conjugation.getString("pronunciation"));
-								item.put("romanized", conjugation.getString("romanized"));
-								StringBuffer reasons = new StringBuffer();
-								JSONArray reasonArray = conjugation.getJSONArray("reasons");
-								for (int j=0; j<reasonArray.length(); j++) {
-									reasons.append(reasonArray.get(j) + "\n");
-								}
-								item.put("reasons", reasons.toString());
-								Dongsa.this.conjugations.add(item);
-								adapter.notifyDataSetChanged();
-							} catch (JSONException e) {
-							}
-	                	}
-					} catch (JSONException e) {
-					}
+                	try {
+                		conjugationArray = new JSONArray(json);
+                		adapter.notifyDataSetChanged();
+                		for (int i=0; i<conjugationArray.length(); i++) {
+                			JSONObject conjugation = (JSONObject)conjugationArray.get(i);
+                			HashMap<String,String> definitionItem = new HashMap<String,String>();
+                			if (i == 0) {
+                				if (!Dongsa.this.verbDatabase.verbExists(conjugation.getString("infinitive"))) {
+                					say("entered verb not in database");
+                				}
+                				String definition = Dongsa.this.verbDatabase.verbDefinition(conjugation.getString("infinitive"));
+                				if (!definition.equals("")) {
+                					definitionItem.put("clickable", "no");
+                					definitionItem.put("conjugation_name", "definition");
+                					definitionItem.put("conjugated", definition);
+                					Dongsa.this.conjugations.add(definitionItem);
+                					adapter.notifyDataSetChanged();
+                				}
+                			}
+                			HashMap<String,String> item = new HashMap<String,String>();
+                			item.put("clickable", "yes");
+                			item.put("infinitive", conjugation.getString("infinitive"));
+                			item.put("conjugation_name", conjugation.getString("conjugation_name"));
+                			item.put("conjugated", conjugation.getString("conjugated"));
+                			item.put("pronunciation", conjugation.getString("pronunciation"));
+                			item.put("romanized", conjugation.getString("romanized"));
+                			StringBuffer reasons = new StringBuffer();
+                			JSONArray reasonArray = conjugation.getJSONArray("reasons");
+                			for (int j=0; j<reasonArray.length(); j++) {
+                				reasons.append(reasonArray.get(j) + "\n");
+                			}
+                			item.put("reasons", reasons.toString());
+                			Dongsa.this.conjugations.add(item);
+                			adapter.notifyDataSetChanged();
+                		}
+                	} catch (JSONException e) {
+                	}
                 }
             });
         }
