@@ -692,6 +692,7 @@ conjugator.each_conjugation = function(infinitive, regular, callback) {
         conjugator.reasons = [];
         if (conjugator[conjugation].conjugation) {
             var r = {};
+            r.type = 'conjugation';
             r.infinitive = infinitive + '다';
             r.conjugation_name = conjugation.replace(/_/g, ' ');
             r.conjugated = conjugator[conjugation](infinitive, regular);
@@ -716,6 +717,14 @@ conjugator.conjugate = function(infinitive, regular, callback) {
 
 conjugator.conjugate_json = function(infinitive, regular, callback) {
     conjugator.conjugate(infinitive, regular, function(result) {
+        result.unshift({
+            'type': 'both_regular_and_irregular',
+            'value': conjugator.base(infinitive) in conjugator.both_regular_and_irregular
+        });
+        result.unshift({
+            'type': 'verb_type',
+            'value': conjugator.verb_type(infinitive, regular)
+        });
         callback(JSON.stringify(result));
     });
 };

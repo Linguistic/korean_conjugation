@@ -10,9 +10,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.CheckBox;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -49,8 +51,15 @@ public class Dongsa extends Activity {
         
         edittext.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                engine.loadUrl("javascript:update('" + v.getText() + "', false);");
-                return true;
+            	/* We won't force regular conjugation for new verbs
+            	   If the user enters a verb that has both regular and irregular forms the
+            	   checkbox will be displayed so they can choose the form. */
+            	Dongsa.this.regular.setChecked(false);
+            	InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(Dongsa.this.list.getWindowToken(), 0);
+            	engine.loadUrl("javascript:update('" + v.getText() + "', false);");
+                edittext.selectAll();
+            	return true;
             }
         });
 
@@ -63,22 +72,26 @@ public class Dongsa extends Activity {
             new int[] { R.id.text1, R.id.text2 }
         ));
         this.list.setOnItemClickListener(new OnItemClickListener() {
-            // @Override
-             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-                 Intent next = new Intent();
-                 next.setClass(Dongsa.this, ConjugationDetailActivity.class);
-                 HashMap<String, String> conjugation = conjugations.get(position);
-                 next.putExtra("infinitive", conjugation.get("infinitive"));
-                 next.putExtra("conjugation_name", conjugation.get("conjugation_name"));
-                 next.putExtra("conjugated", conjugation.get("conjugated"));
-                 next.putExtra("pronunciation", conjugation.get("pronunciation"));
-                 next.putExtra("romanized", conjugation.get("romanized"));
-                 next.putExtra("reasons", conjugation.get("reasons"));
-                 startActivity(next);
-             }
+        	// @Override
+        	public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+        		HashMap<String, String> conjugation = conjugations.get(position);
+        		if (conjugation.get("type").equals("conjugation")) {
+        			Intent next = new Intent();
+        			next.setClass(Dongsa.this, ConjugationDetailActivity.class);
+        			next.putExtra("infinitive", conjugation.get("infinitive"));
+        			next.putExtra("conjugation_name", conjugation.get("conjugation_name"));
+        			next.putExtra("conjugated", conjugation.get("conjugated"));
+        			next.putExtra("pronunciation", conjugation.get("pronunciation"));
+        			next.putExtra("romanized", conjugation.get("romanized"));
+        			next.putExtra("reasons", conjugation.get("reasons"));
+        			startActivity(next);
+
+        		}
+        	}
         });
 
         edittext.setText("\ud558\ub2e4");
+        edittext.selectAll();
         engine.loadUrl("file:///android_asset/html/android.html");
     }
 
@@ -98,6 +111,14 @@ public class Dongsa extends Activity {
         return this.regular.isChecked();
     }
 
+    protected void bothRegularAndIrregular(final boolean visible) {
+    	this.regular.post(new Runnable() {
+    		public void run() {
+    			Dongsa.this.regular.setVisibility(visible ? View.VISIBLE : View.GONE);
+    		}
+    	});
+	}
+    
     public void showVerb(final String json) {
         synchronized (this.conjugations) {
             final SimpleAdapter adapter = (SimpleAdapter)this.list.getAdapter();
@@ -112,20 +133,36 @@ public class Dongsa extends Activity {
 	                    for (int i=0; i<conjugationArray.length(); i++) {
 							try {
 								JSONObject conjugation = (JSONObject)conjugationArray.get(i);
+								
 								HashMap<String,String> item = new HashMap<String,String>();
-								item.put("infinitive", conjugation.getString("infinitive"));
-								item.put("conjugation_name", conjugation.getString("conjugation_name"));
-								item.put("conjugated", conjugation.getString("conjugated"));
-								item.put("pronunciation", conjugation.getString("pronunciation"));
-								item.put("romanized", conjugation.getString("romanized"));
-								StringBuffer reasons = new StringBuffer();
-								JSONArray reasonArray = conjugation.getJSONArray("reasons");
-								for (int j=0; j<reasonArray.length(); j++) {
-									reasons.append(reasonArray.get(j) + "\n");
+								item.put("type", conjugation.getString("type"));
+								if (conjugation.getString("type").equals("conjugation")) {
+									
+									item.put("infinitive", conjugation.getString("infinitive"));
+									item.put("conjugation_name", conjugation.getString("conjugation_name"));
+									item.put("conjugated", conjugation.getString("conjugated"));
+									item.put("pronunciation", conjugation.getString("pronunciation"));
+									item.put("romanized", conjugation.getString("romanized"));
+									StringBuffer reasons = new StringBuffer();
+									JSONArray reasonArray = conjugation.getJSONArray("reasons");
+									for (int j=0; j<reasonArray.length(); j++) {
+										reasons.append(reasonArray.get(j) + "\n");
+									}
+									item.put("reasons", reasons.toString());
+								} else if (conjugation.getString("type").equals("verb_type")) {
+									item.put("conjugation_name", "Verb Type");
+									item.put("conjugated", conjugation.getString("value"));
 								}
-								item.put("reasons", reasons.toString());
-								Dongsa.this.conjugations.add(item);
-								adapter.notifyDataSetChanged();
+								if (conjugation.getString("type").equals("both_regular_and_irregular")) {
+									boolean bothRegularAndIrregular = conjugation.getBoolean("value");
+									if (bothRegularAndIrregular) {
+										Toast.makeText(Dongsa.this, "This verb has both irregular and regular forms", Toast.LENGTH_LONG).show();
+									}
+									Dongsa.this.bothRegularAndIrregular(bothRegularAndIrregular);
+								} else {
+									Dongsa.this.conjugations.add(item);
+									adapter.notifyDataSetChanged();
+								}
 							} catch (JSONException e) {
 							}
 	                	}
@@ -136,7 +173,7 @@ public class Dongsa extends Activity {
         }
     }
 
-    @Override
+	@Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
     }
