@@ -1,6 +1,8 @@
 var express = require('express')
   , conjugator = require('./html/korean/conjugator')
   , hangeul = require('./html/korean/hangeul')
+  , pronunciation = require('./html/korean/pronunciation.js')
+  , romanization = require('./html/korean/romanization')
   , sqlite3 = require('sqlite3');
 
 var app = express.createServer();
@@ -20,6 +22,32 @@ app.configure('development', function(){
 app.configure('production', function(){
   app.use(express.static(__dirname + '/html'));
   app.use(express.errorHandler());
+});
+
+// For Joseph Speigle - may he rest in peace
+
+app.post('/api/v1/pronunciation', function (req, res) {
+  var word = req.param('word', '');
+  var korean_pronunciation = pronunciation.get_pronunciation(word);
+  res.json({
+    'version': pronunciation.version + '.' + romanization.version,
+    'word': word,
+    'korean_pronunciation': korean_pronunciation,
+    'romanization': romanization.romanize(korean_pronunciation)
+  });
+});
+
+// For Joseph Speigle - may he rest in peace
+
+app.post('/api/v1/conjugation', function (req, res) {
+  var verb = req.param('verb', '');
+  conjugator.conjugate_json(verb, req.param('regular', false), function(json) {
+    res.json({
+      'version': conjugator.version,
+      'verb': verb,
+      'conjugation': json
+    });
+  });
 });
 
 app.get('/', function (req, res) {

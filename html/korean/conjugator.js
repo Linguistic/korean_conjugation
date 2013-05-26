@@ -729,6 +729,10 @@ conjugator.conjugate_json = function(infinitive, regular, callback) {
     });
 };
 
+// This will be incremented when the algorithm is modified so clients
+// that have cached API calls will know that their cache is invalid
+conjugator.version = 1;
+
 // Export functions to node
 try {
     for (f in conjugator) {
