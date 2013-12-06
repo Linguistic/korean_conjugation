@@ -3,6 +3,7 @@ var express = require('express')
   , hangeul = require('./html/korean/hangeul')
   , pronunciation = require('./html/korean/pronunciation.js')
   , romanization = require('./html/korean/romanization')
+  , stemmer = require('./html/korean/stemmer')
   , sqlite3 = require('sqlite3');
 
 var app = express.createServer();
@@ -46,6 +47,16 @@ app.post('/api/v1/conjugation', function (req, res) {
       'version': conjugator.version,
       'verb': verb,
       'conjugation': json
+    });
+  });
+});
+
+app.get('/stem', function (req, res) {
+  var search = req.query.search;
+  stemmer.stem_lookup(req.query.search, select_by_stem, function(results) {
+    res.render('stem-search.jade', {
+      search: search,
+      results: results
     });
   });
 });
@@ -100,12 +111,16 @@ app.get('/', function (req, res) {
   }
 });
 
-var select_definition;
+var select_definition
+  , select_verb_type
+  , select_by_definition
+  , select_by_stem;
 
 var db = new sqlite3.Database('korean-verb-database/korean-verbs.sqlite', sqlite3.OPEN_READONLY, function() {
   select_definition = db.prepare("SELECT definition FROM verbs WHERE infinitive = ?");
   select_verb_type = db.prepare("SELECT infinitive, verb_type FROM valid_verbs WHERE infinitive = ?");
   select_by_definition = db.prepare("SELECT infinitive, definition FROM verbs WHERE definition MATCH ?");
+  select_by_stem = db.prepare("SELECT infinitive FROM stems WHERE stem = ?");
   app.listen(3000);
   console.log('Server running at http://127.0.0.1:3000/');
 });
