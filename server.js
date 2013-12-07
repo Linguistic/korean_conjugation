@@ -53,10 +53,12 @@ app.post('/api/v1/conjugation', function (req, res) {
 
 app.get('/stem', function (req, res) {
   var search = req.query.search;
-  stemmer.stem_lookup(req.query.search, select_by_stem, function(results) {
+  stemmer.stem_lookup(req.query.search, select_by_stem, function(order, results) {
     res.render('stem-search.jade', {
       search: search,
-      results: results
+      order: order,
+      results: results,
+      formAction: '/stem/',
     });
   });
 });
@@ -81,7 +83,8 @@ app.get('/', function (req, res) {
         }
         res.render('definition-search.jade', {
           search: search,
-          results: results
+          results: results,
+          formAction: '/',
         });
       }
     );
@@ -102,7 +105,8 @@ app.get('/', function (req, res) {
               search: infinitive,
               conjugations: conjugations,
               definitions: definitions,
-              valid_verbs: valid_verbs
+              valid_verbs: valid_verbs,
+              formAction: '/',
             });
           }
         );
@@ -120,7 +124,7 @@ var db = new sqlite3.Database('korean-verb-database/korean-verbs.sqlite', sqlite
   select_definition = db.prepare("SELECT definition FROM verbs WHERE infinitive = ?");
   select_verb_type = db.prepare("SELECT infinitive, verb_type FROM valid_verbs WHERE infinitive = ?");
   select_by_definition = db.prepare("SELECT infinitive, definition FROM verbs WHERE definition MATCH ?");
-  select_by_stem = db.prepare("SELECT infinitive FROM stems WHERE stem = ?");
+  select_by_stem = db.prepare("SELECT stems.infinitive, verbs.definition FROM stems, verbs WHERE stems.stem = ? AND verbs.infinitive = stems.infinitive");
   app.listen(3000);
   console.log('Server running at http://127.0.0.1:3000/');
 });

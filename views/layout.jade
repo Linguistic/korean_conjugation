@@ -13,14 +13,14 @@ html(lang="en")
         div.navbar-header
           a.navbar-brand(href='/')
             동사 Dongsa Korean Verb Conjugator</a>
-          form.navbar-form.navbar-right(role='search', action='/', method='get')
+          form.navbar-form.navbar-right(role='search', action=formAction, method='get')
             div.form-group
               input.form-control(name='search', value=search, placeholder='English or Korean verb')
             button.btn.btn-default(type='submit')
               | Search
       article
         != body
-      footer
+      div#footer
         a(href='https://market.android.com/details?id=us.bravender.android.dongsa&feature=search_result')
           img(src='/images/android_badge.png')
         a(href='http://itunes.apple.com/us/app/dongsa-korean-verb-conjugator/id401591807?mt=8')

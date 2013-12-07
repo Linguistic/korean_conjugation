@@ -1,2 +1,6 @@
-- each result in results
-  p= result
+dl.dl-horizontal
+  - each infinitive in order
+    dt
+      a(href='/?search=#{infinitive}')= infinitive
+    - each definition in results[infinitive]
+      dd= definition

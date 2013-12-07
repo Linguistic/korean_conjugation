@@ -77,18 +77,33 @@ stemmer.stem = function(verb) {
 
 stemmer.stem_lookup = function(phrase, select_by_stem, callback) {
     var spread_phrase = hangeul.spread(phrase);
-    var results = [];
+    var order = [];
+    var results = {};
     var called = 0;
     function add_results(new_results) {
-        results = results.concat(new_results);
+        for (var i=0; i<new_results.length; i++) {
+            var infinitive = new_results[i][0];
+            var definition = new_results[i][1];
+            if (order.indexOf(infinitive) == -1) {
+                order.push(infinitive);
+            }
+            if (!(infinitive in results)) {
+                results[infinitive] = [];
+            }
+            if (results[infinitive].indexOf(definition) == -1) {
+                results[infinitive].push(definition);
+            }
+        }
         called++;
         if (called == spread_phrase.length) {
-            return callback(results);
+            return callback(order, results);
         }
     }
     for (var i=spread_phrase.length; i>=0; i--) {
         select_by_stem.all(spread_phrase.substr(0, i), function(err, rows) {
-            add_results(rows.map(function(r) { return r.infinitive }));
+            add_results(rows.map(function(r) {
+                return [r.infinitive, r.definition];
+            }));
         });
     }
 };
@@ -102,6 +117,14 @@ stemmer.base_forms = function(infinitive) {
         conjugator.base3,
         conjugator.declarative_present_informal_low,
         function(infinitive, regular) {
+            var original_infinitive = infinitive;
+            infinitive = infinitive.substr(0, infinitive.length-1);
+            if (!regular) {
+                return conjugator.drop_l(infinitive, '');
+            }
+            return infinitive;
+        },
+        function(infinitive, regular) {
             var conjugated = conjugator.declarative_present_informal_high(
                 infinitive,
                 regular
@@ -113,7 +136,8 @@ stemmer.base_forms = function(infinitive) {
             // Need to cast to String here because some
             // irregulars are Geulja (see hangeul.js)
             base_form = String(base(infinitive, regular));
-            if (base_forms.indexOf(base_form) == -1 &&
+            if (base_form &&
+                base_forms.indexOf(base_form) == -1 &&
                 base_forms.indexOf(base_form.substr(0, base_form.length-1)) == -1) {
                 base_forms.push(base_form);
             }
