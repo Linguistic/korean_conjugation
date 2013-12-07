@@ -10,20 +10,22 @@ div.table-responsive
     thead
       tr
         th.conjugation-name level
-        th conjugation [pronunciation]
+        th conjugation
     tbody
     - each conjugation in conjugations
       tr.conjugation-row(onclick='$(this).next().next().toggle()')
         td.conjugation-name= conjugation.conjugation_name
         td
           | #{conjugation.conjugated}
-          | #{(conjugation.pronunciation == conjugation.conjugated ? '' : '[' + conjugation.pronunciation + '] ')}
       tr(style='display:none')
       tr(style='display:none')
         td.explanation(colspan='2')
           dl.dl-horizontal
             dt romanization
             dd= conjugation.romanized
+            - if (conjugation.pronunciation != conjugation.conjugated)
+               dt pronunciation
+               dd [ #{conjugation.pronunciation} ]
           ol
             - each reason in conjugation.reasons
               li= reason
