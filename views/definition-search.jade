@@ -1,7 +1,7 @@
-!= partial('search-form.jade')
 div#results
   - if (results.length == 0)
     p No results were found.
   - else
-    - each result in results
-      != partial('search-result.jade', {infinitive: result.infinitive, definition: result.definition})
+    dl(class='dl-horizontal')
+      - each result in results
+        != partial('search-result.jade', {infinitive: result.infinitive, definition: result.definition})

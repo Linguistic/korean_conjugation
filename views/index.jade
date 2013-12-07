@@ -1,25 +1,29 @@
-!= partial('search-form.jade')
-div#definition
+dl.dl-horizontal
+  dt= search
   - each definition in definitions
-    p= definition
-- if (valid_verbs.length == 0 && definitions.length == 0)
-  Verb was not found in the verb database
-table
-  thead
-    tr
-      th tense
-      th conjugation
-      th pronunciation
-      th romanization
-  tbody
-  - each conjugation in conjugations
-    tr
-      td(class='conjugation-name')= conjugation.conjugation_name
-      td(class='conjugation-conjugated')= conjugation.conjugated
-      td(class='conjugation-pronunciation')= (conjugation.pronunciation == conjugation.conjugated ? '' : '[' + conjugation.pronunciation + ']')
-      td(class='conjugation-romanized')= conjugation.romanized
-    tr(rowspan='4', style='display: none;')
-      td(class='conjugation-explanation')
-        p(class='conjugation-romanized')= conjugation.romanized
-        - each reason in conjugation.reasons
-          p(class='conjugation-reason')= reason
+    dd= definition
+  - if (valid_verbs.length == 0 && definitions.length == 0)
+    dd
+      | Verb was not found in the verb database
+div.table-responsive
+  table.table.table-striped.table-condensed(style='width: auto; margin-left: auto; margin-right: auto;')
+    thead
+      tr
+        th.conjugation-name level
+        th conjugation [pronunciation]
+    tbody
+    - each conjugation in conjugations
+      tr.conjugation-row(onclick='$(this).next().next().toggle()')
+        td.conjugation-name= conjugation.conjugation_name
+        td
+          | #{conjugation.conjugated}
+          | #{(conjugation.pronunciation == conjugation.conjugated ? '' : '[' + conjugation.pronunciation + '] ')}
+      tr(style='display:none')
+      tr(style='display:none')
+        td.explanation(colspan='2')
+          dl.dl-horizontal
+            dt romanization
+            dd= conjugation.romanized
+          ol
+            - each reason in conjugation.reasons
+              li= reason
