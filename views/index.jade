@@ -1,15 +1,21 @@
 dl.dl-horizontal
-  dt= search
+  dt verb
+  dd= search
+  dt definition
   - each definition in definitions
     dd= definition
+  dt type
+  dd= type
+- if (bothRegularAndIrregular)
+      span.label.label-danger This verb has both regular and irregular forms. The definition you see might not match the form you are viewing. You are currently viewing the #{form} form. 
+        a(href=formToggleLink) View the #{otherForm} form.
   - if (valid_verbs.length == 0 && definitions.length == 0)
-    dd
-      | Verb was not found in the verb database
+    dd verb was not found in the verb database
 div.table-responsive
   table.table.table-striped.table-condensed(style='width: auto; margin-left: auto; margin-right: auto;')
     thead
       tr
-        th.conjugation-name level
+        th.conjugation-name tense/politeness level
         th conjugation
     tbody
     - each conjugation in conjugations

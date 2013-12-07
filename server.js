@@ -90,19 +90,25 @@ app.get('/', function (req, res) {
     );
   } else {
     var infinitive = conjugator.base(search || '하') + '다';
+    var regular = req.query.regular;
     var verbs = [];
     var definitions = [];
     var valid_verbs = [];
     select_definition.all(infinitive.replace(/ /g, ''), function(err, results) {
-      definitions = results.map(function(x) { return x.definition });
+      definitions = results.map(function(x) { return x.definition; });
       select_verb_type.all(infinitive.replace(/ /g, ''), function(err, results) {
         valid_verbs = results;
         conjugator.conjugate(
           infinitive,
-          req.query.regular,
+          regular,
           function(conjugations) {
             res.render('index.jade', {
+              bothRegularAndIrregular: infinitive.substr(0, infinitive.length-1) in conjugator.both_regular_and_irregular,
+              form: !regular ? 'irregular' : 'regular',
+              otherForm: !regular ? 'regular' : 'irregular',
+              formToggleLink: '/?search=' + search + (!regular ? '&regular=t' : ''),
               search: infinitive,
+              type: conjugator.verb_type(infinitive, regular),
               conjugations: conjugations,
               definitions: definitions,
               valid_verbs: valid_verbs,

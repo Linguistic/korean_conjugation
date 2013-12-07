@@ -15,8 +15,8 @@ html(lang="en")
             동사 Dongsa Korean Verb Conjugator</a>
           form.navbar-form.navbar-right(role='search', action=formAction, method='get')
             div.form-group
-              input.form-control(name='search', value=search, placeholder='English or Korean verb')
-            button.btn.btn-default(type='submit')
+              input.form-control(autofocus='autofocus', name='search', value=search, placeholder='English or Korean verb')
+            button.btn.btn-primary(type='submit')
               | Search
       article
         != body
