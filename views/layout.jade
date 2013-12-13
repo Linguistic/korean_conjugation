@@ -1,3 +1,5 @@
+- if (typeof(stemSearch) === 'undefined') stemSearch = null
+- if (typeof(verbSearch) === 'undefined') verbSearch = null
 !!! 5
 html(lang="en")
   head
@@ -13,9 +15,14 @@ html(lang="en")
         div.navbar-header
           a.navbar-brand(href='/')
             동사 Dongsa Korean Verb Conjugator</a>
-          form.navbar-form.navbar-right(role='search', action=formAction, method='get')
+          form.navbar-form.navbar-right(role='search', action="/stem", method='get')
             div.form-group
-              input.form-control(autofocus='autofocus', name='search', value=search, placeholder='English or Korean verb')
+              input.form-control(autofocus='autofocus', name='search', value=stemSearch, placeholder='Conjugated Korean verb')
+            button.btn.btn-primary(type='submit')
+              | Stem / Reverse
+          form.navbar-form.navbar-right(role='search', action="/", method='get')
+            div.form-group
+              input.form-control(autofocus='autofocus', name='search', value=verbSearch, placeholder='English or Korean verb')
             button.btn.btn-primary(type='submit')
               | Search
       article
@@ -26,5 +33,6 @@ html(lang="en")
             img(src='/images/android_badge.png')
           a(href='http://itunes.apple.com/us/app/dongsa-korean-verb-conjugator/id401591807?mt=8')
             img(src='/images/app_store_badge.png')
-          p Korean verb conjugation algorithm &copy; 2008 &ndash; 2014 Dan Bravender
+          p
+            a(href="http://github.com/dbravender/korean_conjugation/tree/master") Korean verb conjugation algorithm &copy; 2008 &ndash; 2014 Dan Bravender
           != partial('definitions-copyright.jade')

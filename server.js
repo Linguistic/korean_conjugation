@@ -4,7 +4,10 @@ var express = require('express')
   , pronunciation = require('./html/korean/pronunciation.js')
   , romanization = require('./html/korean/romanization')
   , stemmer = require('./html/korean/stemmer')
-  , sqlite3 = require('sqlite3');
+  , sqlite3 = require('sqlite3')
+  , redis = require('redis');
+
+var redisClient = redis.createClient();
 
 var app = express.createServer();
 
@@ -29,6 +32,7 @@ app.configure('production', function(){
 
 app.post('/api/v1/pronunciation', function (req, res) {
   var word = req.param('word', '');
+  redisClient.zincrby('dongsa:api:pronunciation', 1, word);
   var korean_pronunciation = pronunciation.get_pronunciation(word);
   res.json({
     'version': pronunciation.version + '.' + romanization.version,
@@ -42,6 +46,8 @@ app.post('/api/v1/pronunciation', function (req, res) {
 
 app.post('/api/v1/conjugation', function (req, res) {
   var verb = req.param('verb', '');
+  redisClient.zincrby('dongsa:verb', 1, verb);
+  redisClient.zincrby('dongsa:api:verb', 1, verb);
   conjugator.conjugate_json(verb, req.param('regular', false), function(json) {
     res.json({
       'version': conjugator.version,
@@ -53,12 +59,13 @@ app.post('/api/v1/conjugation', function (req, res) {
 
 app.get('/stem', function (req, res) {
   var search = req.query.search;
+  redisClient.zincrby('dongsa:stem', 1, search);
   stemmer.stem_lookup(req.query.search, select_by_stem, function(order, results) {
     res.render('stem-search.jade', {
+      stemSearch: search,
       search: search,
       order: order,
       results: results,
-      formAction: '/stem/',
     });
   });
 });
@@ -72,6 +79,7 @@ app.get('/', function (req, res) {
   if (!search) {
     return res.redirect('/?search=하다');
   }
+  redisClient.zincrby('dongsa:verb', 1, search);
   // if non-hangeul characters appear in the input search the definitions
   if (!hangeul.is_hangeul_string(search)) {
     select_by_definition.all(
@@ -84,7 +92,6 @@ app.get('/', function (req, res) {
         res.render('definition-search.jade', {
           search: search,
           results: results,
-          formAction: '/',
         });
       }
     );
@@ -106,13 +113,12 @@ app.get('/', function (req, res) {
               bothRegularAndIrregular: infinitive.substr(0, infinitive.length-1) in conjugator.both_regular_and_irregular,
               form: !regular ? 'irregular' : 'regular',
               otherForm: !regular ? 'regular' : 'irregular',
-              formToggleLink: '/?search=' + search + (!regular ? '&regular=t' : ''),
+              verbSearch: infinitive,
               search: infinitive,
               type: conjugator.verb_type(infinitive, regular),
               conjugations: conjugations,
               definitions: definitions,
               valid_verbs: valid_verbs,
-              formAction: '/',
             });
           }
         );
