@@ -113,6 +113,7 @@ app.get('/', function (req, res) {
               bothRegularAndIrregular: infinitive.substr(0, infinitive.length-1) in conjugator.both_regular_and_irregular,
               form: !regular ? 'irregular' : 'regular',
               otherForm: !regular ? 'regular' : 'irregular',
+              formToggleLink: '/?search=' + search + (!regular ? '&regular=t' : ''),
               verbSearch: infinitive,
               search: infinitive,
               type: conjugator.verb_type(infinitive, regular),
