@@ -425,12 +425,12 @@ conjugator.declarative_present_informal_low = function(infinitive, regular, furt
 conjugator.declarative_present_informal_low.conjugation = true;
 
 conjugator.declarative_present_informal_high = function(infinitive, regular) {
-    infinitive = conjugator.base2(infinitive, regular)
-    if ((infinitive.charAt(infinitive.length-1) == '이' && !infinitive.hidden_padchim &&
-        !(infinitive in conjugator.regular_ees)) ||
-        infinitive == '아니') {
+    base = conjugator.base2(infinitive, regular);
+    if ((base.charAt(base.length-1) == '이' && !base.hidden_padchim &&
+        !(base in conjugator.regular_ees)) ||
+        base == '아니') {
         conjugator.reasons.push('에요 irregular')
-        return infinitive + '에요';
+        return base + '에요';
     }
     return conjugator.merge(conjugator.declarative_present_informal_low(infinitive, regular, true), '요');
 };

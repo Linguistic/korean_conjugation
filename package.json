@@ -21,5 +21,8 @@
     "jade": "0.26.0",
     "sqlite3": "2.1.19",
     "redis": "0.9.1"
+  },
+  "devDependencies": {
+    "pretty-js": "^0.1.8"
   }
 }

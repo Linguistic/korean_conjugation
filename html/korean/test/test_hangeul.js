@@ -49,4 +49,4 @@ assert.equal(hangeul.padchim(geulja), 'ㄷ');
 geulja = new hangeul.Geulja('나');
 geulja.hidden_padchim = true;
 assert.equal(geulja.charAt(0), '나');
-assert.equal(geulja.charAt(0).hidden_padchim, true);
+assert.equal(geulja.charAt(-1).hidden_padchim, true);

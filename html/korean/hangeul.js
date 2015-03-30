@@ -21,7 +21,6 @@ function Geulja(__value__) {
             result.hidden_padchim = this.hidden_padchim;
         }
         return result;
-
     }
 };
 
