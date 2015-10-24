@@ -8,6 +8,62 @@ try {
 
 var romanization = {};
 
+romanization.ipa_transliteration = {
+    'ㅏ': 'a',
+    'ㅑ': 'ja',
+    'ㅓ': 'ə',
+    'ㅕ': 'jə',
+    'ㅗ': 'o',
+    'ㅛ': 'jo',
+    'ㅜ': 'u',
+    'ㅠ': 'ju',
+    'ㅡ': 'ɨ',
+    'ㅣ': 'i',
+    'ㅐ': 'ɛ',
+    'ㅒ': 'jɛ',
+    'ㅔ': 'e',
+    'ㅖ': 'ye',
+    'ㅘ': 'wa',
+    'ㅙ': 'wɛ',
+    'ㅚ': 'we',
+    'ㅝ': 'wə',
+    'ㅞ': 'we',
+    'ㅟ': 'wi',
+    'ㅢ': 'ɨi',
+    'ᄀ': ['k', 'k'],
+    'ᄂ': ['n', 'n'],
+    'ᄃ': ['d', 't'],
+    'ᄅ': ['r', 'l'],
+    'ᄆ': ['m', 'm'],
+    'ᄇ': ['p', 'b'],
+    'ᄉ': ['s', 's'],
+    'ᄋ': ['', 'ŋ'],
+    'ᄌ': ['tɕ', 't'],
+    'ᄎ': ['tɕʰ','t'],
+    'ᄏ': ['k', 'k'],
+    'ᄐ': ['t', 't'],
+    'ᄑ': ['pʰ', 'pʰ'],
+    'ᄒ': ['h', 't'],
+    'ᄁ': ['k͈','k͈'],
+    'ᄄ': ['t͈','t͈'],
+    'ᄈ': ['p͈','p͈'],
+    'ᄊ': ['s͈','s͈'],
+    'ᄍ': ['tɕ͈','tɕ͈'],
+// The pronunciation engine should remove most of these
+// these are here in the off chance that they make it through
+    'ᆭ': ['', 'n'],
+    'ᆬ': ['', 'n'],
+    'ᆪ': ['', 'g'],
+    'ᆰ': ['', 'l'],
+    'ᆱ': ['', 'l'],
+    'ᆲ': ['', 'l'],
+    'ᆳ': ['', 'l'],
+    'ᆴ': ['', 'l'],
+    'ᆵ': ['', 'l'],
+    'ᆶ': ['', 'l'],
+    'ᆹ': ['', 'p']
+};
+
 romanization.transliteration = {
     'ㅏ': 'ah',
     'ㅑ': 'yah',
@@ -64,46 +120,57 @@ romanization.transliteration = {
     'ᆹ': ['', 'p']
 };
 
-romanization.romanize_character = function(character) {
+romanization.romanize_character = function(character, ipa) {
     if (!hangeul.is_hangeul(character)) {
         return character;
     }
     var lead = hangeul.lead(character);
     var vowel = hangeul.vowel(character);
     var padchim = hangeul.padchim(character);
-    var lead_transliteration = romanization.transliteration[lead][0];
-    var vowel_transliteration = romanization.transliteration[vowel];
+    var transliterator = null;
+    if (ipa) {
+        transliterator = romanization.ipa_transliteration;
+    } else {
+        transliterator = romanization.transliteration;
+    }
+    var lead_transliteration = transliterator[lead][0];
+    var vowel_transliteration = transliterator[vowel];
+    var padchim_transliteration = null;
     if (padchim in romanization.transliteration) {
-        var padchim_transliteration = romanization.transliteration[padchim][1];
+        padchim_transliteration = romanization.transliteration[padchim][1];
     } else {
         try {
-            var padchim_transliteration = romanization.transliteration[pronunciation.padchim_to_lead[padchim]][1];
+            padchim_transliteration = romanization.transliteration[pronunciation.padchim_to_lead[padchim]][1];
         } catch(e) {
-            var padchim_transliteration = '';
+            padchim_transliteration = '';
         }
     }
     // What would a language be without irregulars?
     if (lead in {'ᄉ': true, 'ᄊ': true} && vowel in {'ㅑ': true, 'ㅣ': true, 'ㅛ': true, 'ㅠ': true}) {
+        if (ipa) return 'ɕ' + vowel_transliteration + padchim_transliteration;
         return 'sh' + vowel_transliteration + padchim_transliteration;
     }
     return lead_transliteration + vowel_transliteration + padchim_transliteration;
 };
 
-romanization.romanize = function(word) {
-    var pronunciation_of_word = pronunciation.get_pronunciation(word);
-    return pronunciation_of_word
+romanization.romanize = function(word, ipa) {
+    return pronunciation.get_pronunciation(word)
            .split('')
-           .map(romanization.romanize_character)
+           .map(function (x) {return romanization.romanize_character(x, ipa);})
            .join('-');
+};
+
+romanization.ipa = function(word) {
+    return romanization.romanize(word, true);
 };
 
 // This will be incremented when the algorithm is modified so clients
 // that have cached API calls will know that their cache is invalid
-romanization.version = 1;
+romanization.version = 2;
 
 // Export functions to node
 try {
-    for (f in romanization) {
+    for (var f in romanization) {
         exports[f] = romanization[f];
     }
 } catch(e) {}

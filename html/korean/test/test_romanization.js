@@ -28,3 +28,29 @@ var romanization = require('../romanization'),
      expected = test_data[1];
      assert.equal(romanization.romanize(input), expected);
 });
+
+[['안녕',     'an-njəng'],
+ ['시간',     'ɕi-kan'],
+ ['축구',     'tɕʰug-k͈u'],
+ ['야구',     'ja-ku'],
+ ['탁구',     'tag-k͈u'],
+ ['김치',     'kim-tɕʰi'],
+ ['원숭이',   'wən-sung-i'],
+ ['댄',       'dɛn'],
+ ['강남',     'kang-nam'],
+ ['수연',     'su-jən'],
+ ['숭실',     'sung-ɕil'],
+ ['열쇠',     'jəl-swe'],
+ ['참치',     'tɕʰam-tɕʰi'],
+ ['양파',     'jang-pʰa'],
+ ['괜잖아',   'kwɛn-tɕan-a'],
+ ['이따 봐',  'i-t͈a- -pwa'],
+ ['없어',     'əp-s͈ə'],
+ ['합니다',   'ham-ni-da'],
+ ['합시다',   'hap-ɕi-da'],
+ ['먹을거야', 'mə-kɨl-kə-ja'],
+ ['슈퍼',     'ɕju-pʰə']].forEach(function(test_data) {
+     input = test_data[0];
+     expected = test_data[1];
+     assert.equal(romanization.ipa(input), expected);
+});
