@@ -27,6 +27,8 @@ div.table-responsive
       tr(style='display:none')
         td.explanation(colspan='2')
           dl.dl-horizontal
+            dt IPA
+            dd= conjugation.ipa
             dt romanization
             dd= conjugation.romanized
             - if (conjugation.pronunciation != conjugation.conjugated)
