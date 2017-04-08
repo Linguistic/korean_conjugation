@@ -133,7 +133,7 @@ var select_definition
   , select_by_definition
   , select_by_stem;
 
-var db = new sqlite3.Database('korean-verb-database/korean-verbs.sqlite', sqlite3.OPEN_READONLY, function() {
+var db = new sqlite3.Database('korean-verbs.sqlite', sqlite3.OPEN_READONLY, function() {
   select_definition = db.prepare("SELECT definition FROM verbs WHERE infinitive = ?");
   select_verb_type = db.prepare("SELECT infinitive, verb_type FROM valid_verbs WHERE infinitive = ?");
   select_by_definition = db.prepare("SELECT infinitive, definition FROM verbs WHERE definition MATCH ?");
