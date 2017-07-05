@@ -80,10 +80,11 @@
   [string]
   (let [endings-that-get-uh #{"뜨" "쓰" "트"}
         vowels-that-get-ah #{"ㅗ" "ㅏ" "ㅑ"}
-        appendable-character (first (cons (nth string 0) (reverse (filter #(not (or (= "ㅡ" (vowel %)) (nil? (padchim %)))) string))))]
+        appendable-character (first (reverse (cons (nth string 0) (filter #(not (and (= "ㅡ" (vowel %)) (nil? (padchim %)))) string))))]
     (cond
       (contains? endings-that-get-uh appendable-character) "어"
       (contains? vowels-that-get-ah (vowel appendable-character)) "아"
       :else "어")))
 
 (assert (= (find-vowel-to-append "썼어요") "어"))
+(assert (= (find-vowel-to-append "부적하다") "아"))
