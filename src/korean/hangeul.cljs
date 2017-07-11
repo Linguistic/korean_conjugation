@@ -1,6 +1,25 @@
 (ns korean.hangeul
   (:require [clojure.string :as string]))
 
+(defn geulja
+  [string & [hidden-padchim original-padchim]]
+  (let [string-with-meta (js/String. string)]
+    (set! (.-hidden-padchim string-with-meta) hidden-padchim)
+    (set! (.-original-padchim string-with-meta) original-padchim)
+    (set! (.-charAt string-with-meta)
+      (fn [offset]
+        (let [inheriting-padchim-value (if (= (- (.-length string) 1) offset) hidden-padchim nil)]
+          (geulja (.charAt string offset) inheriting-padchim-value original-padchim))))
+    string-with-meta))
+
+(defn hidden-padchim?
+  [string]
+  (.-hidden-padchim string))
+
+(defn original-padchim
+  [string]
+  (.-original-padchim string))
+
 (defn is-hangeul?
   [string]
   (let [start-char-code (.charCodeAt "가" 0)
@@ -21,16 +40,19 @@
 
 (defn padchim
   [character]
-  (let [code-point (+ (- (.charCodeAt "ᆨ" 0) 1)
+  (let [hidden-padchim? (hidden-padchim? character)
+        original-padchim (original-padchim character)
+        code-point (+ (- (.charCodeAt "ᆨ" 0) 1)
                       (mod (- (.charCodeAt character 0) 44032) 28))]
-    (if (= code-point 4519) nil ; code point of empty padchim
-      (js/String.fromCharCode code-point))))
+    (cond hidden-padchim? true
+          original-padchim original-padchim
+          (= code-point 4519) nil ; code point of empty padchim
+          :else (js/String.fromCharCode code-point))))
 
 (defn vowel
   [character]
   (let [padchim-character (padchim character)
-        ; TODO - handle fake padchim
-        padchim-offset (cond (nil? padchim-character) -1
+        padchim-offset (cond (or (true? padchim-character) (nil? padchim-character)) -1
                              :else (- (.charCodeAt padchim-character 0)
                                       (.charCodeAt "ᆨ" 0)))]
     (js/String.fromCharCode

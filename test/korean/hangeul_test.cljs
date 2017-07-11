@@ -2,7 +2,8 @@
   (:require-macros [cljs.test :refer [deftest testing is]])
   (:require [cljs.test]
             [korean.hangeul :refer [is-hangeul? lead vowel padchim
-                                    join find-vowel-to-append hangeul-match]]))
+                                    join find-vowel-to-append hangeul-match
+                                    geulja hidden-padchim? original-padchim]]))
 
 (deftest test-is-hangeul? []
   (testing "is-hangeul?"
@@ -54,13 +55,11 @@
     (is (= true (hangeul-match "읽" "*" "*" "ᆰ")))
     (is (= false (hangeul-match "읽" "*" "*" nil)))))
 
-;geulja = new hangeul.Geulja('나');
-;geulja.hidden_padchim = true;
-;assert.equal(hangeul.padchim(geulja), true);;
-
-;geulja = new hangeul.Geulja('걸');
-;geulja.original_padchim = 'ㄷ';
-;assert.equal(hangeul.padchim(geulja), 'ㄷ');
+(deftest test-hidden-padchim []
+  (testing "hidden-padchim?"
+    (is (= true (hidden-padchim? (geulja "나" true))))
+    (is (= "ㄷ" (original-padchim (geulja "걸" false "ㄷ"))))
+    (is (= true (hidden-padchim? (.charAt (geulja "나" true) 0))))))
 
 ;geulja = new hangeul.Geulja('나');
 ;geulja.hidden_padchim = true;
