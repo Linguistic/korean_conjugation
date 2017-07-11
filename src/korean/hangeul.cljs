@@ -1,17 +1,14 @@
-(ns korean-conjugation.hangeul
+(ns korean.hangeul
   (:require [clojure.string :as string]))
 
 (defn is-hangeul?
   [string]
   (let [start-char-code (.charCodeAt "가" 0)
-        end-char-code (.charCodeAt "힣" 0)]
+        end-char-code (.charCodeAt "힣" 0)
+        stripped-string (string/replace string #"[\!\"\?\. ]" "")]
     (every? #(and (>= (.charCodeAt %1 0) start-char-code)
                   (<= (.charCodeAt %1 0) end-char-code))
-            (seq string))))
-
-(assert (= true (is-hangeul? "안녕")))
-(assert (= false (is-hangeul? "?")))
-(assert (= false (is-hangeul? "b아")))
+            (seq stripped-string))))
 
 ; lead, padchim and vowel equations are all from
 ; http://www.kfunigraz.ac.at/~katzer/korean_hangul_unicode.html
@@ -50,11 +47,6 @@
     [(lead character) (vowel character) (padchim character)]
     [character]))
 
-(assert (= (split "아") ["ᄋ" "ㅏ" nil]))
-(assert (= (split "안") ["ᄋ" "ㅏ" "ᆫ"]))
-(assert (= (split "웍") ["ᄋ" "ㅝ" "ᆨ"]))
-(assert (= (split "안") ["ᄋ" "ㅏ" "ᆫ"]))
-
 (defn join
   [lead vowel padchim]
   (let [lead-offset (- (.charCodeAt lead 0) (.charCodeAt "ᄀ" 0))
@@ -65,16 +57,9 @@
         code-point (+ padchim-offset (* vowel-offset 28) (* lead-offset 588) 44033)]
     (js/String.fromCharCode code-point)))
 
-(assert (= (join "ᄋ" "ㅏ" "ᆫ") "안"))
-(assert (= (join "ᄋ" "ㅝ" "ᆨ") "웍"))
-
-(defn spread
+(defn spread-hangeul
   [string]
   (string/join "" (filter identity (mapcat split string))))
-
-(assert (= (spread "안녕하세요") "ᄋㅏᆫᄂㅕᆼᄒㅏᄉㅔᄋㅛ"))
-(assert (= (spread "뭐라고요?") "ᄆㅝᄅㅏᄀㅗᄋㅛ?"))
-
 
 (defn find-vowel-to-append
   [string]
@@ -86,5 +71,11 @@
       (contains? vowels-that-get-ah (vowel appendable-character)) "아"
       :else "어")))
 
-(assert (= (find-vowel-to-append "썼어요") "어"))
-(assert (= (find-vowel-to-append "부적하다") "아"))
+(defn hangeul-match
+  [character lead-match vowel-match padchim-match]
+  (let [lead (lead character)
+        vowel (vowel character)
+        padchim (padchim character)]
+    (and (or (= lead-match "*") (= lead lead-match))
+         (or (= vowel-match "*") (= vowel vowel-match))
+         (or (= padchim-match "*") (= padchim padchim-match)))))
